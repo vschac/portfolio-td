@@ -1,4 +1,4 @@
 .env.local
 .env.prod
 node_modules
-old_build
+old-build/
