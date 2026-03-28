@@ -41,6 +41,9 @@ const logRtc = (label, payload) => {
   console.log(`[WEBRTC] ${label}`, payload || "");
 };
 
+const CONTROL_CHANNEL_LABEL = "KeyboardData";
+const MAX_PENDING_CONTROL_MESSAGES = 20;
+
 export class SimpleSignalingClient {
   constructor(url, { logStatus }) {
     this.url = url;
@@ -157,6 +160,8 @@ export class SimpleWebRTCReceiver {
     this.makingOffer = false;
     this.ignoreOffer = false;
     this.isSettingRemoteAnswerPending = false;
+    this.dataChannel = null;
+    this.pendingControlMessages = [];
 
     this.signalingClient.setWebRTCConnection(this);
   }
@@ -170,6 +175,8 @@ export class SimpleWebRTCReceiver {
       iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
     });
     logRtc("peer connection created");
+
+    this.ensureControlDataChannel();
 
     this.peerConnection.addTransceiver("video", { direction: "recvonly" });
 
@@ -265,6 +272,13 @@ export class SimpleWebRTCReceiver {
       logRtc("local ice candidate sent", event.candidate);
     };
 
+    this.peerConnection.ondatachannel = (event) => {
+      logRtc("remote data channel received", { label: event.channel?.label || "" });
+      if (event.channel?.label === CONTROL_CHANNEL_LABEL) {
+        this.setupControlDataChannel(event.channel);
+      }
+    };
+
     this.peerConnection.onnegotiationneeded = async () => {
       if (this.makingOffer || !this.targetAddress) {
         return;
@@ -297,6 +311,99 @@ export class SimpleWebRTCReceiver {
       this.logStatus(`Peer state: ${this.peerConnection.connectionState}`);
       logRtc(`connection state: ${this.peerConnection.connectionState}`);
     };
+  }
+
+  setupControlDataChannel(channel) {
+    this.dataChannel = channel;
+    this.dataChannel.onopen = () => {
+      this.logStatus("Control channel connected.");
+      logRtc("control channel open");
+      this.flushPendingControlMessages();
+    };
+    this.dataChannel.onclose = () => {
+      this.logStatus("Control channel closed.");
+      logRtc("control channel closed");
+      if (this.dataChannel === channel) {
+        this.dataChannel = null;
+      }
+    };
+    this.dataChannel.onerror = (event) => {
+      console.error("[WEBRTC] Control channel error", event);
+      this.logStatus("Control channel error. Check console.");
+    };
+    this.dataChannel.onmessage = (event) => {
+      logRtc("control channel message received", event?.data || "");
+    };
+  }
+
+  ensureControlDataChannel() {
+    if (!this.peerConnection) {
+      return;
+    }
+
+    if (
+      this.dataChannel &&
+      (this.dataChannel.readyState === "open" || this.dataChannel.readyState === "connecting")
+    ) {
+      return;
+    }
+
+    try {
+      const channel = this.peerConnection.createDataChannel(CONTROL_CHANNEL_LABEL, {
+        ordered: true
+      });
+      this.setupControlDataChannel(channel);
+      logRtc("control data channel created", { label: CONTROL_CHANNEL_LABEL });
+    } catch (error) {
+      console.error("[WEBRTC] Failed to create control data channel", error);
+    }
+  }
+
+  flushPendingControlMessages() {
+    if (!this.dataChannel || this.dataChannel.readyState !== "open") {
+      return;
+    }
+
+    if (!this.pendingControlMessages.length) {
+      return;
+    }
+
+    for (const message of this.pendingControlMessages) {
+      this.dataChannel.send(message);
+    }
+    logRtc("flushed queued control messages", this.pendingControlMessages.length);
+    this.pendingControlMessages = [];
+  }
+
+  sendControlKey(key) {
+    const normalizedKey = String(key || "").trim();
+    if (!["1", "2", "3"].includes(normalizedKey)) {
+      return;
+    }
+
+    const message = JSON.stringify({
+      type: "keydown",
+      key: normalizedKey,
+      code: `Digit${normalizedKey}`,
+      shiftKey: false,
+      altKey: false,
+      ctrlKey: false,
+      metaKey: false,
+      timestamp: Date.now()
+    });
+
+    if (this.dataChannel?.readyState === "open") {
+      this.dataChannel.send(message);
+      logRtc("control key sent", normalizedKey);
+      return;
+    }
+
+    if (this.pendingControlMessages.length >= MAX_PENDING_CONTROL_MESSAGES) {
+      this.pendingControlMessages.shift();
+    }
+    this.pendingControlMessages.push(message);
+    this.ensureControlDataChannel();
+    logRtc("control key queued while data channel is not open", normalizedKey);
   }
 
   sendSignaling(signalingType, content) {

@@ -10,8 +10,8 @@
   const BORDER_PULSE_MS = 550
   const KEY_MESSAGES = {
     '1': 'Feedback reset',
-    '2': 'Message two',
-    '3': 'Message three',
+    '2': 'Snapshot noise',
+    '3': 'Increment noise seed',
   }
   const C = {
     bg:    BG,
@@ -38,6 +38,8 @@
   const logStatus = (msg) => console.log(`[STATUS] ${msg}`)
   const handleKeydown = (event) => {
     if (event.key !== '1' && event.key !== '2' && event.key !== '3') return
+
+    webrtcReceiver?.sendControlKey(event.key)
 
     activeKeyLabel = `${event.key} — ${KEY_MESSAGES[event.key]}`
     // Re-trigger the border animation on every valid key press.
