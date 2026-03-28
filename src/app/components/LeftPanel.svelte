@@ -65,10 +65,9 @@
     <!-- Bio -->
     <p class="mt-3 fade-up" style="font-size: 13px; line-height: 1.85; color: {C.fg}; opacity: 0.62; max-width: 460px; animation-delay: 0.75s">
       I study computer science and treat programming as a creative
-      discipline. My work sits at the boundary between systems thinking
-      and visual expression — from low-level code to generative graphics.
-      I believe the most interesting problems live at the intersection of
-      rigour and intuition.
+      discipline. I like combining skills across disciplines with programming 
+      and systems design to create unique projects. The world is a very tech-driven
+      place, and knowing how to express yourself in it is a valuable skill.
     </p>
 
     <!-- Scroll indicator -->
