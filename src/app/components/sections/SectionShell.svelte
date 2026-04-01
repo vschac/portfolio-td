@@ -24,7 +24,7 @@
 
 <section
   {@attach fromAction(scrollReveal)}
-  style="
+  style="scroll-snap-align: start;
     width: 100%;
     min-height: {minHeight};
     background: #141413;

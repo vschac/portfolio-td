@@ -6,6 +6,7 @@
   import SectionProjects from './app/components/sections/SectionProjects.svelte'
   import SectionGallery from './app/components/sections/SectionGallery.svelte'
   import SectionContact from './app/components/sections/SectionContact.svelte'
+  import ChatBox from './app/components/ChatBox.svelte'
 </script>
 
 <div style="width: 100vw; background: #141413; overflow-x: clip;">
@@ -19,7 +20,7 @@
 
     <!-- Left column — sections 01 + 02 -->
     <div style="width: 53%; border-right: 1px solid #222220; flex-shrink: 0;">
-      <div style="height: 100vh; overflow: hidden;">
+      <div style="height: 100vh; overflow: hidden; scroll-snap-align: start;">
         <LeftPanel />
       </div>
       <SectionTwo />
@@ -33,9 +34,13 @@
   </div>
 
   <!-- Sections 03–06: full-width -->
-  <SectionExperience />
-  <SectionProjects />
-  <SectionGallery />
+  <div id="chat-active-zone">
+    <SectionExperience />
+    <SectionProjects />
+    <SectionGallery />
+  </div>
   <SectionContact />
 
 </div>
+
+<ChatBox />
