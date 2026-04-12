@@ -2,12 +2,14 @@
   import { onMount, onDestroy } from 'svelte'
   import { SimpleSignalingClient, SimpleWebRTCReceiver } from '../../webrtc.js'
 
-  const BG = '#141413'
+  const BG = '#000000'
   const VIDEO_INSET = 12
   const VIDEO_RADIUS = 10
   const VIDEO_SHADOW = '0 8px 24px rgba(0, 0, 0, 0.22)'
   const KEY_CLEAR_DELAY_MS = 1000
   const BORDER_PULSE_MS = 550
+  const LIVE_VIDEO_ID = 'webrtc-live-video'
+  const FALLBACK_VIDEO_ID = 'webrtc-fallback-video'
   const KEY_MESSAGES = {
     '1': 'Feedback reset',
     '2': 'Snapshot noise',
@@ -22,11 +24,16 @@
   }
 
   const SIGNALING_WS_URL = import.meta.env.VITE_CONTROL_WS
+  const FALLBACK_VIDEO_SRC = import.meta.env.VITE_FALLBACK_VIDEO_URL || ''
 
-  let videoEl = $state(null)
+  let videoEl = null
+  let fallbackVideoEl = null
   let isStreaming = $state(false)
+  let hasFallbackError = $state(false)
+  let isFallbackConfigured = $state(Boolean(FALLBACK_VIDEO_SRC))
   let activeKeyLabel = $state('')
   let isBorderPulsing = $state(false)
+  let wasStreaming = false
 
   let signalingClient = null
   let webrtcReceiver = null
@@ -62,16 +69,60 @@
   }
 
   onMount(() => {
-    const syncFromStream = () => {
-      isStreaming = Boolean(videoEl?.srcObject)
+    videoEl = document.getElementById(LIVE_VIDEO_ID)
+    fallbackVideoEl = document.getElementById(FALLBACK_VIDEO_ID)
+    if (!(videoEl instanceof HTMLVideoElement) || !(fallbackVideoEl instanceof HTMLVideoElement)) {
+      logStatus('Video elements not found in DOM')
+      return
     }
 
-    const eventNames = ['loadedmetadata', 'play', 'pause', 'ended', 'emptied']
+    if (!isFallbackConfigured) {
+      hasFallbackError = true
+    }
+
+    const syncFromStream = () => {
+      const stream = videoEl?.srcObject
+      const hasConnectedTrack =
+        stream instanceof MediaStream &&
+        stream.getVideoTracks().some((track) => track.readyState === 'live' && track.enabled)
+      const hasDecodedFrames =
+        Boolean(videoEl) &&
+        videoEl.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA &&
+        videoEl.videoWidth > 0 &&
+        videoEl.videoHeight > 0 &&
+        !videoEl.paused &&
+        !videoEl.ended
+
+      // Only consider stream "active" when frames are actually being rendered.
+      isStreaming = Boolean(hasConnectedTrack && hasDecodedFrames)
+      if (!isStreaming) {
+        if (wasStreaming) fallbackVideoEl.currentTime = 0
+        if (isFallbackConfigured && !hasFallbackError) fallbackVideoEl.play().catch(() => {})
+      }
+      wasStreaming = isStreaming
+    }
+
+    const eventNames = ['loadedmetadata', 'loadeddata', 'playing', 'play', 'pause', 'ended', 'emptied', 'stalled', 'waiting']
     const unsubs = eventNames.map((name) => {
       videoEl.addEventListener(name, syncFromStream)
       return () => videoEl.removeEventListener(name, syncFromStream)
     })
     removeListeners = () => unsubs.forEach((u) => u())
+
+    const onFallbackError = () => {
+      hasFallbackError = true
+    }
+    const onFallbackLoaded = () => {
+      if (isFallbackConfigured) hasFallbackError = false
+    }
+    fallbackVideoEl.addEventListener('error', onFallbackError)
+    fallbackVideoEl.addEventListener('loadeddata', onFallbackLoaded)
+    const prevRemove = removeListeners
+    removeListeners = () => {
+      prevRemove()
+      fallbackVideoEl.removeEventListener('error', onFallbackError)
+      fallbackVideoEl.removeEventListener('loadeddata', onFallbackLoaded)
+    }
 
     syncFromStream()
     syncIntervalId = window.setInterval(syncFromStream, 1000)
@@ -110,27 +161,34 @@
     style="top: 50%; left: 50%; width: min(calc(100% - {VIDEO_INSET * 2}px), calc(100vh - {VIDEO_INSET * 2}px)); aspect-ratio: 1 / 1; transform: translate(-50%, -50%); border-radius: {VIDEO_RADIUS}px; box-shadow: {VIDEO_SHADOW};"
   >
     <video
-      bind:this={videoEl}
+      id={FALLBACK_VIDEO_ID}
+      style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center center; display: block; opacity: {isStreaming ? 0 : 1}; transition: opacity 0.5s ease;"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+    >
+      <source src={FALLBACK_VIDEO_SRC} type="video/mp4" />
+    </video>
+    {#if !isStreaming && hasFallbackError}
+      <div
+        style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; background: #0c0c0b; color: {C.fgBright}; font-size: 11px; letter-spacing: 0.06em;"
+      >
+        {#if !isFallbackConfigured}
+          Fallback video not configured (set VITE_FALLBACK_VIDEO_URL)
+        {:else}
+          Fallback video failed to load (path or codec issue)
+        {/if}
+      </div>
+    {/if}
+    <video
+      id={LIVE_VIDEO_ID}
       style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center center; display: block; opacity: {isStreaming ? 1 : 0}; transition: opacity 0.5s ease;"
       autoplay
       playsinline
       muted
     ></video>
-    <!-- Placeholder — shown while waiting for stream -->
-    <div
-      class="placeholder"
-      style="opacity: {isStreaming ? 0 : 1}; pointer-events: {isStreaming ? 'none' : 'auto'}"
-    >
-      <!-- Crosshair -->
-      <div style="position: relative; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
-        <div style="position: absolute; width: 100%; height: 1px; background: #262623;"></div>
-        <div style="position: absolute; width: 1px; height: 100%; background: #262623;"></div>
-        <div style="width: 14px; height: 14px; border: 1px solid #353532;"></div>
-      </div>
-      <span style="margin-top: 24px; font-size: 10px; letter-spacing: 0.14em; color: #2e2e2b;">
-        {SIGNALING_WS_URL ? 'Waiting for stream…' : 'No signal URL configured'}
-      </span>
-    </div>
   </div>
 
   <!-- Floating label — top left -->
@@ -141,7 +199,7 @@
   <!-- Floating status — bottom left -->
   <div style="position: absolute; bottom: 28px; left: 28px; z-index: 20; display: flex; align-items: center; gap: 10px;">
     <span style="font-size: 10px; letter-spacing: 0.1em; color: {C.fgBright}">{isStreaming ? '▶' : '■'}</span>
-    <span style="font-size: 10px; letter-spacing: 0.08em; color: {C.fgText}">{isStreaming ? 'Live - this video is being streamed from touch designer' : 'Standby'}</span>
+    <span style="font-size: 10px; letter-spacing: 0.08em; color: {C.fgText}">{isStreaming ? 'Live - this video is being streamed from touch designer' : 'Standby - playing fallback movie'}</span>
   </div>
 
 </div>
@@ -177,14 +235,4 @@
     }
   }
 
-  .placeholder {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #0c0c0b;
-    transition: opacity 0.5s ease;
-  }
 </style>

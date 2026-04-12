@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
 
   const C = {
-    bg:      '#141413',
+    bg:      '#000000',
     fg:      '#E2DDD5',
     fgDim:   '#6B6864',
     fgFaint: '#3a3a37',

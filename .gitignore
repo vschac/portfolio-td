@@ -3,3 +3,8 @@
 node_modules
 old-build/
 dist/
+TDMovie.mp4
+*.mp4
+*.mov
+.vercel
+.env*.local
