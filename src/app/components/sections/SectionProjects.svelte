@@ -20,23 +20,26 @@
       body: 'Placeholder — how it responds to audio, the rendering approach, and the aesthetic goal.',
       tags: ['WebAudio API', 'Canvas', 'JavaScript'],
     },
+    {
+      meta: '2024 · Tool',
+      title: 'CLI Build Pipeline',
+      body: 'Placeholder — what it automates, how it fits into a workflow, and why it was worth building from scratch.',
+      tags: ['Go', 'Docker', 'CI/CD'],
+    },
   ]
 </script>
 
 <StickySection index="04" label="Projects">
-  <div class="entries">
-    {#each items as item, i}
-      {#if i > 0}<div class="divider"></div>{/if}
-      <div class="entry">
-        <div class="left">
+  <div class="grid">
+    {#each items as item}
+      <div class="card">
+        <div class="card-top">
           <span class="meta">{item.meta}</span>
-          <div class="tags">
-            {#each item.tags as tag}<span class="tag">{tag}</span>{/each}
-          </div>
-        </div>
-        <div class="right">
           <h2 class="title">{item.title}</h2>
           <p class="body">{item.body}</p>
+        </div>
+        <div class="tags">
+          {#each item.tags as tag}<span class="tag">{tag}</span>{/each}
         </div>
       </div>
     {/each}
@@ -44,31 +47,29 @@
 </StickySection>
 
 <style>
-  .entries {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .divider {
-    height: 1px;
-    background: #1e1e1c;
-    margin: 28px 0;
-  }
-
-  .entry {
-    display: flex;
-    gap: 8%;
-    align-items: flex-start;
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
     font-family: 'IBM Plex Mono', monospace;
+    flex: 1;
   }
 
-  .left {
-    flex: 0 0 220px;
+  .card {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding-top: 3px;
+    justify-content: space-between;
+    padding: 36px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+
+  .card-top {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
   .meta {
@@ -78,31 +79,12 @@
     text-transform: uppercase;
   }
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tag {
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    color: #484845;
-    border: 1px solid #1e1e1c;
-    padding: 3px 8px;
-    text-transform: uppercase;
-  }
-
-  .right {
-    flex: 1;
-  }
-
   .title {
-    font-size: clamp(16px, 1.6vw, 22px);
+    font-size: clamp(18px, 1.8vw, 26px);
     font-weight: 400;
     color: #E2DDD5;
     letter-spacing: 0.01em;
-    margin: 0 0 10px;
+    margin: 0;
     line-height: 1.3;
   }
 
@@ -112,6 +94,21 @@
     color: #E2DDD5;
     opacity: 0.62;
     margin: 0;
-    max-width: 520px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 28px;
+  }
+
+  .tag {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: #484845;
+    border: 1px solid #1e1e1c;
+    padding: 3px 8px;
+    text-transform: uppercase;
   }
 </style>

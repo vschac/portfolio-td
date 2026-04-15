@@ -5,38 +5,39 @@
     {
       meta: 'Summer 2025 · Internship',
       title: 'Software Engineer Intern',
-      body: 'Placeholder — company, role, and what you shipped.',
+      bullets: [
+        'Built internal tooling dashboard used by 40+ engineers to monitor deployment health and pipeline status',
+        'Migrated legacy REST endpoints to a type-safe GraphQL layer, reducing client-side data fetching by 35%',
+        'Shipped a real-time notification system with WebSocket integration across three microservices',
+      ],
       tags: ['React', 'Node.js', 'TypeScript'],
     },
     {
       meta: 'Fall 2024 · Research',
       title: 'Undergraduate Research Assistant',
-      body: 'Placeholder — research focus, contributions, and outcomes.',
+      bullets: [
+        'Developed a computer vision pipeline for automated cell segmentation on histology slides',
+        'Trained and evaluated convolutional models on a 12k-image dataset, achieving 91% IoU on held-out test set',
+        'Co-authored a workshop paper presented at a regional machine learning symposium',
+      ],
       tags: ['Python', 'PyTorch', 'Data Analysis'],
-    },
-    {
-      meta: '2023 – Present · Independent',
-      title: 'Freelance Developer',
-      body: 'Placeholder — types of work, clients, and what you built.',
-      tags: ['Svelte', 'TouchDesigner', 'WebRTC'],
     },
   ]
 </script>
 
 <StickySection index="03" label="Experience">
-  <div class="entries">
+  <div class="grid">
     {#each items as item, i}
-      {#if i > 0}<div class="divider"></div>{/if}
-      <div class="entry">
-        <div class="left">
+      <div class="card">
+        <div class="card-top">
           <span class="meta">{item.meta}</span>
-          <div class="tags">
-            {#each item.tags as tag}<span class="tag">{tag}</span>{/each}
-          </div>
-        </div>
-        <div class="right">
           <h2 class="title">{item.title}</h2>
-          <p class="body">{item.body}</p>
+          <ul class="bullets">
+            {#each item.bullets as bullet}<li>{bullet}</li>{/each}
+          </ul>
+        </div>
+        <div class="tags">
+          {#each item.tags as tag}<span class="tag">{tag}</span>{/each}
         </div>
       </div>
     {/each}
@@ -44,31 +45,29 @@
 </StickySection>
 
 <style>
-  .entries {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .divider {
-    height: 1px;
-    background: #1e1e1c;
-    margin: 28px 0;
-  }
-
-  .entry {
-    display: flex;
-    gap: 8%;
-    align-items: flex-start;
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
     font-family: 'IBM Plex Mono', monospace;
+    flex: 1;
   }
 
-  .left {
-    flex: 0 0 220px;
+  .card {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding-top: 3px;
+    justify-content: space-between;
+    padding: 44px 48px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+
+  .card-top {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .meta {
@@ -78,10 +77,43 @@
     text-transform: uppercase;
   }
 
+  .title {
+    font-size: clamp(18px, 1.8vw, 26px);
+    font-weight: 400;
+    color: #E2DDD5;
+    letter-spacing: 0.01em;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .bullets {
+    font-size: 12px;
+    line-height: 1.85;
+    color: #E2DDD5;
+    opacity: 0.62;
+    margin: 0;
+    padding-left: 16px;
+    list-style: none;
+  }
+
+  .bullets li {
+    position: relative;
+    padding-left: 4px;
+    margin-bottom: 8px;
+  }
+
+  .bullets li::before {
+    content: '—';
+    position: absolute;
+    left: -16px;
+    color: #3a3a37;
+  }
+
   .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    margin-top: 28px;
   }
 
   .tag {
@@ -91,27 +123,5 @@
     border: 1px solid #1e1e1c;
     padding: 3px 8px;
     text-transform: uppercase;
-  }
-
-  .right {
-    flex: 1;
-  }
-
-  .title {
-    font-size: clamp(16px, 1.6vw, 22px);
-    font-weight: 400;
-    color: #E2DDD5;
-    letter-spacing: 0.01em;
-    margin: 0 0 10px;
-    line-height: 1.3;
-  }
-
-  .body {
-    font-size: 12px;
-    line-height: 1.85;
-    color: #E2DDD5;
-    opacity: 0.62;
-    margin: 0;
-    max-width: 520px;
   }
 </style>
