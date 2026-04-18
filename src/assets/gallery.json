@@ -1,0 +1,298 @@
+{
+  "photos": [
+    {
+      "file": "IMG_4469.JPG",
+      "thumb": "IMG_4469.webp",
+      "ratio": 0.5625,
+      "l": 0.0583,
+      "hex": "#c6394e"
+    },
+    {
+      "file": "IMG_4979.jpeg",
+      "thumb": "IMG_4979.webp",
+      "ratio": 0.75,
+      "l": 0.0662,
+      "hex": "#9a7a65"
+    },
+    {
+      "file": "IMG_8115.jpeg",
+      "thumb": "IMG_8115.webp",
+      "ratio": 0.75,
+      "l": 0.0815,
+      "hex": "#9e8861"
+    },
+    {
+      "file": "IMG_6414.jpeg",
+      "thumb": "IMG_6414.webp",
+      "ratio": 0.75,
+      "l": 0.0827,
+      "hex": "#958a6a"
+    },
+    {
+      "file": "IMG_2904.jpeg",
+      "thumb": "IMG_2904.webp",
+      "ratio": 0.75,
+      "l": 0.0905,
+      "hex": "#88758a"
+    },
+    {
+      "file": "IMG_4150.jpeg",
+      "thumb": "IMG_4150.webp",
+      "ratio": 1.3333,
+      "l": 0.1002,
+      "hex": "#90806f"
+    },
+    {
+      "file": "IMG_6794.jpeg",
+      "thumb": "IMG_6794.webp",
+      "ratio": 0.75,
+      "l": 0.1058,
+      "hex": "#a48a5b"
+    },
+    {
+      "file": "IMG_1240.jpeg",
+      "thumb": "IMG_1240.webp",
+      "ratio": 0.75,
+      "l": 0.121,
+      "hex": "#c66a39"
+    },
+    {
+      "file": "IMG_6434.jpeg",
+      "thumb": "IMG_6434.webp",
+      "ratio": 0.6991,
+      "l": 0.1281,
+      "hex": "#808080"
+    },
+    {
+      "file": "IMG_6768.jpeg",
+      "thumb": "IMG_6768.webp",
+      "ratio": 0.633,
+      "l": 0.134,
+      "hex": "#bb7344"
+    },
+    {
+      "file": "IMG_7187.jpeg",
+      "thumb": "IMG_7187.webp",
+      "ratio": 0.7499,
+      "l": 0.1471,
+      "hex": "#c66539"
+    },
+    {
+      "file": "IMG_5822.jpeg",
+      "thumb": "IMG_5822.webp",
+      "ratio": 1.3333,
+      "l": 0.152,
+      "hex": "#a97356"
+    },
+    {
+      "file": "IMG_3092.jpeg",
+      "thumb": "IMG_3092.webp",
+      "ratio": 0.75,
+      "l": 0.1533,
+      "hex": "#848679"
+    },
+    {
+      "file": "IMG_4578.jpeg",
+      "thumb": "IMG_4578.webp",
+      "ratio": 0.6666,
+      "l": 0.1587,
+      "hex": "#bc8543"
+    },
+    {
+      "file": "IMG_3242.jpeg",
+      "thumb": "IMG_3242.webp",
+      "ratio": 1.3333,
+      "l": 0.1612,
+      "hex": "#9639c6"
+    },
+    {
+      "file": "IMG_3170.jpeg",
+      "thumb": "IMG_3170.webp",
+      "ratio": 0.7499,
+      "l": 0.1674,
+      "hex": "#8a8575"
+    },
+    {
+      "file": "IMG_6629.jpeg",
+      "thumb": "IMG_6629.webp",
+      "ratio": 0.75,
+      "l": 0.1762,
+      "hex": "#858877"
+    },
+    {
+      "file": "IMG_3100.jpeg",
+      "thumb": "IMG_3100.webp",
+      "ratio": 1.3333,
+      "l": 0.1948,
+      "hex": "#c6393b"
+    },
+    {
+      "file": "IMG_7096.jpeg",
+      "thumb": "IMG_7096.webp",
+      "ratio": 0.75,
+      "l": 0.1984,
+      "hex": "#c65439"
+    },
+    {
+      "file": "IMG_1169.jpeg",
+      "thumb": "IMG_1169.webp",
+      "ratio": 1.3333,
+      "l": 0.2213,
+      "hex": "#888777"
+    },
+    {
+      "file": "IMG_5646.jpeg",
+      "thumb": "IMG_5646.webp",
+      "ratio": 0.6769,
+      "l": 0.2378,
+      "hex": "#888377"
+    },
+    {
+      "file": "IMG_6920.jpeg",
+      "thumb": "IMG_6920.webp",
+      "ratio": 0.75,
+      "l": 0.267,
+      "hex": "#857d7a"
+    },
+    {
+      "file": "IMG_7068.jpeg",
+      "thumb": "IMG_7068.webp",
+      "ratio": 0.75,
+      "l": 0.2721,
+      "hex": "#c65539"
+    },
+    {
+      "file": "IMG_7087.jpeg",
+      "thumb": "IMG_7087.webp",
+      "ratio": 0.75,
+      "l": 0.2908,
+      "hex": "#c65739"
+    },
+    {
+      "file": "IMG_6515.jpeg",
+      "thumb": "IMG_6515.webp",
+      "ratio": 0.75,
+      "l": 0.3207,
+      "hex": "#95836a"
+    },
+    {
+      "file": "IMG_2878.jpeg",
+      "thumb": "IMG_2878.webp",
+      "ratio": 0.75,
+      "l": 0.3441,
+      "hex": "#878b74"
+    },
+    {
+      "file": "IMG_6844.jpeg",
+      "thumb": "IMG_6844.webp",
+      "ratio": 0.7143,
+      "l": 0.3863,
+      "hex": "#b1734e"
+    },
+    {
+      "file": "IMG_5795.jpeg",
+      "thumb": "IMG_5795.webp",
+      "ratio": 1.5208,
+      "l": 0.4003,
+      "hex": "#c3923c"
+    },
+    {
+      "file": "IMG_1092.jpeg",
+      "thumb": "IMG_1092.webp",
+      "ratio": 1.3333,
+      "l": 0.4065,
+      "hex": "#517fae"
+    },
+    {
+      "file": "IMG_4616.jpeg",
+      "thumb": "IMG_4616.webp",
+      "ratio": 1.3333,
+      "l": 0.4104,
+      "hex": "#8a7d75"
+    },
+    {
+      "file": "IMG_5230.jpeg",
+      "thumb": "IMG_5230.webp",
+      "ratio": 0.8001,
+      "l": 0.4109,
+      "hex": "#6f8c90"
+    },
+    {
+      "file": "IMG_6348.jpeg",
+      "thumb": "IMG_6348.webp",
+      "ratio": 1.3333,
+      "l": 0.4229,
+      "hex": "#5489ab"
+    },
+    {
+      "file": "IMG_4173.jpeg",
+      "thumb": "IMG_4173.webp",
+      "ratio": 0.7148,
+      "l": 0.4364,
+      "hex": "#627f9d"
+    },
+    {
+      "file": "IMG_4189.jpeg",
+      "thumb": "IMG_4189.webp",
+      "ratio": 1.4998,
+      "l": 0.4461,
+      "hex": "#7d8280"
+    },
+    {
+      "file": "IMG_5505.jpeg",
+      "thumb": "IMG_5505.webp",
+      "ratio": 1.3333,
+      "l": 0.4508,
+      "hex": "#5888a7"
+    },
+    {
+      "file": "IMG_5694.jpeg",
+      "thumb": "IMG_5694.webp",
+      "ratio": 0.75,
+      "l": 0.4546,
+      "hex": "#65819a"
+    },
+    {
+      "file": "IMG_5858.jpeg",
+      "thumb": "IMG_5858.webp",
+      "ratio": 0.6381,
+      "l": 0.4878,
+      "hex": "#92896d"
+    },
+    {
+      "file": "IMG_6911.jpeg",
+      "thumb": "IMG_6911.webp",
+      "ratio": 0.75,
+      "l": 0.5425,
+      "hex": "#81817e"
+    },
+    {
+      "file": "IMG_5998.jpeg",
+      "thumb": "IMG_5998.webp",
+      "ratio": 1.3333,
+      "l": 0.5622,
+      "hex": "#8d8372"
+    },
+    {
+      "file": "IMG_6890.jpeg",
+      "thumb": "IMG_6890.webp",
+      "ratio": 1.3333,
+      "l": 0.5917,
+      "hex": "#7f7f80"
+    },
+    {
+      "file": "IMG_5328.jpeg",
+      "thumb": "IMG_5328.webp",
+      "ratio": 1.2997,
+      "l": 0.6128,
+      "hex": "#64849b"
+    },
+    {
+      "file": "IMG_4642.jpeg",
+      "thumb": "IMG_4642.webp",
+      "ratio": 1.7772,
+      "l": 0.8175,
+      "hex": "#808080"
+    }
+  ]
+}
