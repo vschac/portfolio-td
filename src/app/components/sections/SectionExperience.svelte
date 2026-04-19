@@ -3,24 +3,24 @@
 
   const items = [
     {
-      meta: 'Summer 2025 · Internship',
-      title: 'Software Engineer Intern',
+      meta: 'Jan - Jun 2026 · Co-op',
+      title: 'Backend/Infrastructure Engineer',
       bullets: [
-        'Built internal tooling dashboard used by 40+ engineers to monitor deployment health and pipeline status',
-        'Migrated legacy REST endpoints to a type-safe GraphQL layer, reducing client-side data fetching by 35%',
-        'Shipped a real-time notification system with WebSocket integration across three microservices',
+        'Designed and deployed ElastiCache (Redis) caching layer, dramatically improving page load latency and improving scalability under peak traﬃc',
+        'Built end-to-end on-call automations integrating Slack, Datadog, Notion, and Linear, reducing manual incident coordination and postmortem overhead',
+        'Developed Apache Superset dashboards to monitor claims processing and internal KPIs, enabling data-driven decision making across operations',
       ],
-      tags: ['React', 'Node.js', 'TypeScript'],
+      tags: ['Svelte', 'Node.js', 'TypeScript', 'AWS', 'Datadog', 'Postgres', 'Superset'],
     },
     {
-      meta: 'Fall 2024 · Research',
-      title: 'Undergraduate Research Assistant',
+      meta: 'Jan - Jun 2025 · Co-op',
+      title: 'Lead Software Engineer',
       bullets: [
-        'Developed a computer vision pipeline for automated cell segmentation on histology slides',
-        'Trained and evaluated convolutional models on a 12k-image dataset, achieving 91% IoU on held-out test set',
-        'Co-authored a workshop paper presented at a regional machine learning symposium',
+        'Accelerated all Fast-PT computations by 2–3x through a multi-tiered caching system',
+        'Redesigned and modernized the API to enable seamless integration with cosmology software tools (e.g., CLASS, CAMB)',
+        'Authored comprehensive documentation and implemented a unit testing framework (pytest) to improve maintainability and scientific reproducibility',
       ],
-      tags: ['Python', 'PyTorch', 'Data Analysis'],
+      tags: ['Python', 'Pytest', 'Numpy', 'Scipy', 'Jax'],
     },
   ]
 </script>

@@ -3,28 +3,28 @@
 
   const items = [
     {
-      meta: '2026 · Web',
+      meta: '2026 · Web + systems',
       title: 'This Portfolio',
       body: 'Svelte + Vite site with a live WebRTC stream from a TouchDesigner generative system. Keypress signals route back to the TD network in real time.',
       tags: ['Svelte', 'WebRTC', 'TouchDesigner'],
     },
     {
-      meta: '2025 · Generative Art',
-      title: 'Generative Noise System',
-      body: 'Placeholder — concept, how the visual system was constructed, and what made it interesting to build.',
-      tags: ['TouchDesigner', 'GLSL', 'Feedback'],
+      meta: '2025 · Dev Tools',
+      title: 'Vit',
+      body: 'A version control software written in C++ following the Git object model that provides AI powered features such as adding comments, generating reviews, and splitting large commits into smaller descriptive ones.',
+      tags: ['C++', 'Ollama', 'OpenAI API'],
     },
     {
-      meta: '2024 · Audio',
-      title: 'Music Visualizer',
-      body: 'Placeholder — how it responds to audio, the rendering approach, and the aesthetic goal.',
-      tags: ['WebAudio API', 'Canvas', 'JavaScript'],
+      meta: '2025 · Scientific Computing',
+      title: 'JaxPT',
+      body: 'A diﬀerential perturbation theory calculator for cosmology research written in Python. JAX-PT is a re-write of the FAST-PT codebase to leverage Jax’s autodiﬀerentiation, GPU acceleration, and JIT compilation, providing up to 100x',
+      tags: ['Python', 'Jax', 'Numpy'],
     },
     {
-      meta: '2024 · Tool',
-      title: 'CLI Build Pipeline',
-      body: 'Placeholder — what it automates, how it fits into a workflow, and why it was worth building from scratch.',
-      tags: ['Go', 'Docker', 'CI/CD'],
+      meta: '2025 · Mobile',
+      title: 'KTP Member App',
+      body: 'Contributed to the development of a React Native mobile app for the national Kappa Theta Pi technical fraternity, enabling members to access resources, events, and community updates for their chapter.',
+      tags: ['React Native', 'Typescript', 'Expo'],
     },
   ]
 </script>

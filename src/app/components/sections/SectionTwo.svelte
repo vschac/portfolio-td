@@ -15,7 +15,7 @@
         The visualization to the right is a generative noise system built and
         rendered in real time inside TouchDesigner. Layered feedback loops,
         seed-driven noise fields, and iterative mutation produce the forms you
-        see. The stream is delivered live over WebRTC — no recorded footage.
+        see. The stream is delivered live over WebRTC.
       </p>
     </div>
 
@@ -34,7 +34,7 @@
     <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid #1e1e1c;">
       <p style="font-size: 11px; line-height: 1.7; color: #3a3a37; letter-spacing: 0.04em; margin-bottom: 20px;">
         Interested in how this was built? The tech notes cover the TouchDesigner
-        network, WebRTC signaling, and the noise pipeline in detail.
+        network, WebRTC signaling, and fallback handling in detail.
       </p>
       <button class="blog-btn" onclick={() => (modalOpen = true)}>
         <span>Tech Notes</span>
