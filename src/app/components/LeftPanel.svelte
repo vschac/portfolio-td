@@ -20,7 +20,7 @@
     tick()
     const clockId = setInterval(tick, 1000)
 
-    // --- Flowing lines ---
+    // --- Smoke wisps ---
     const ctx = canvas.getContext('2d')!
     const dpr = window.devicePixelRatio || 1
     let w = 0, h = 0
@@ -31,84 +31,77 @@
       w = rect.width; h = rect.height
       canvas.width = w * dpr; canvas.height = h * dpr
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      // Fill black so trail fade works from the start
+      ctx.fillStyle = '#000'
+      ctx.fillRect(0, 0, w, h)
     }
     resize()
     window.addEventListener('resize', resize)
 
-    // --- Line system ---
-    const LINE_COUNT = 6
-    // Shared flow bias — lines drift in a coherent diagonal direction
-    const FLOW_ANGLE = Math.PI * -0.3
-    const FLOW_BIAS = 0.28
-
-    type Line = {
-      pts: { x: number; y: number; vx: number; vy: number; phase: number }[]
-      opacity: number
-      width: number
-      speed: number
-    }
-    const lines: Line[] = []
-
     function rand(lo: number, hi: number) { return lo + Math.random() * (hi - lo) }
 
-    // long = true forces a line that spans ≥ 2/3 of the panel diagonal
-    function spawnLine(onScreen = false, long = false): Line {
-      const pts = []
-      const diag = Math.hypot(w, h)
-      // spread × 3 = total point span; for "long", ensure ≥ 2/3 of diagonal
-      const minSpread = long ? diag * 0.25 : Math.max(160, diag * 0.12)
-      const maxSpread = long ? diag * 0.38 : diag * 0.22
-      const spread = rand(minSpread, maxSpread)
+    // Simple 2D noise — layered sine gives smooth organic flow
+    function flowAngle(x: number, y: number, t: number): number {
+      const scale = 0.0018 // controls how "zoomed in" the field is
+      const s = scale
+      return (
+        Math.sin(x * s * 1.2 + y * s * 0.8 + t) *
+        Math.cos(y * s * 1.4 - x * s * 0.5 + t * 0.7) +
+        Math.sin(x * s * 0.6 - y * s * 1.6 + t * 0.4) * 0.5
+      ) * Math.PI * 2
+    }
 
-      const angle = FLOW_ANGLE + rand(-0.35, 0.35)
+    // Particle type — each wisp stores a trail of recent positions
+    const TRAIL_LENGTH = 120 // how many past positions to keep
 
-      // Centre of the curve sits inside the visible area
-      const cx = onScreen ? rand(w * 0.2, w * 0.8) : rand(-w * 0.1, w * 1.1)
-      const cy = onScreen ? rand(h * 0.2, h * 0.8) : rand(-h * 0.1, h * 1.1)
+    type Wisp = {
+      x: number; y: number
+      trail: { x: number; y: number }[]
+      speed: number
+      width: number
+      opacity: number
+      offset: number
+    }
 
-      // Place 4 control points centred on (cx,cy)
-      for (let j = 0; j < 4; j++) {
-        const t = (j - 1.5) // -1.5, -0.5, 0.5, 1.5  — symmetric around centre
-        const wobble = long ? rand(-0.15, 0.15) : rand(-0.3, 0.3)
-        pts.push({
-          x: cx + Math.cos(angle + wobble) * spread * t,
-          y: cy + Math.sin(angle + wobble) * spread * t,
-          vx: Math.cos(FLOW_ANGLE) * FLOW_BIAS + rand(-0.10, 0.10),
-          vy: Math.sin(FLOW_ANGLE) * FLOW_BIAS + rand(-0.10, 0.10),
-          phase: rand(0, Math.PI * 2),
-        })
-      }
+    const WISP_COUNT = 5
+    const wisps: Wisp[] = []
+
+    function spawnWisp(): Wisp {
+      const x = rand(w * 0.05, w * 0.95)
+      const y = rand(h * 0.05, h * 0.95)
       return {
-        pts,
-        opacity: long ? rand(0.14, 0.26) : rand(0.12, 0.30),
-        width: long ? rand(1.4, 2.6) : rand(1.2, 2.8),
-        speed: rand(0.6, 1.2),
+        x, y,
+        trail: [{ x, y }],
+        speed: rand(1.2, 2.4),
+        width: rand(1.2, 2.5),
+        opacity: rand(0.16, 0.32),
+        offset: rand(0, 1000),
       }
     }
 
-    // First two lines are always long sweeping arcs; the rest are medium
-    for (let i = 0; i < LINE_COUNT; i++) {
-      lines.push(spawnLine(true, i < 2))
-    }
+    for (let i = 0; i < WISP_COUNT; i++) wisps.push(spawnWisp())
 
     let t = 0
 
     function update() {
-      t += 0.006
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i]
-        for (const p of line.pts) {
-          // Drift + sine wobble perpendicular to flow — gives organic curving
-          const wobble = Math.sin(t * 1.2 + p.phase) * 0.14
-          p.x += (p.vx + Math.sin(FLOW_ANGLE + Math.PI / 2) * wobble) * line.speed
-          p.y += (p.vy + Math.cos(FLOW_ANGLE + Math.PI / 2) * wobble) * line.speed
-        }
+      t += 0.003
+      for (let i = 0; i < wisps.length; i++) {
+        const p = wisps[i]
 
-        // Off-screen? Respawn from an edge
-        const allOff = line.pts.every(p =>
-          p.x < -w * 0.3 || p.x > w * 1.3 || p.y < -h * 0.3 || p.y > h * 1.3
-        )
-        if (allOff) lines[i] = spawnLine(true, i < 2)
+        // Sample the flow field at this position
+        const angle = flowAngle(p.x + p.offset, p.y + p.offset, t)
+        p.x += Math.cos(angle) * p.speed
+        p.y += Math.sin(angle) * p.speed
+
+        // Push current position to trail
+        p.trail.push({ x: p.x, y: p.y })
+        if (p.trail.length > TRAIL_LENGTH) p.trail.shift()
+
+        // Off-screen? Respawn
+        const margin = 40
+        if (p.x < -margin || p.x > w + margin || p.y < -margin || p.y > h + margin) {
+          wisps[i] = spawnWisp()
+        }
       }
     }
 
@@ -116,24 +109,23 @@
       ctx.clearRect(0, 0, w, h)
       ctx.lineCap = 'round'
 
-      for (const line of lines) {
-        const [p0, p1, p2, p3] = line.pts
+      for (const p of wisps) {
+        const trail = p.trail
+        if (trail.length < 2) continue
 
-        // Gradient stroke: fade in from start, fade out at end
-        const grad = ctx.createLinearGradient(p0.x, p0.y, p3.x, p3.y)
-        const c = `226, 221, 213`
-        grad.addColorStop(0,    `rgba(${c}, 0)`)
-        grad.addColorStop(0.15, `rgba(${c}, ${line.opacity})`)
-        grad.addColorStop(0.5,  `rgba(${c}, ${line.opacity})`)
-        grad.addColorStop(0.85, `rgba(${c}, ${line.opacity})`)
-        grad.addColorStop(1,    `rgba(${c}, 0)`)
+        // Draw trail as segments with fading opacity: bright at head, transparent at tail
+        for (let j = 1; j < trail.length; j++) {
+          const progress = j / trail.length // 0 = tail, 1 = head
+          const alpha = p.opacity * progress * progress // quadratic falloff
+          if (alpha < 0.005) continue
 
-        ctx.beginPath()
-        ctx.moveTo(p0.x, p0.y)
-        ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)
-        ctx.strokeStyle = grad
-        ctx.lineWidth = line.width
-        ctx.stroke()
+          ctx.beginPath()
+          ctx.moveTo(trail[j - 1].x, trail[j - 1].y)
+          ctx.lineTo(trail[j].x, trail[j].y)
+          ctx.strokeStyle = `rgba(226, 221, 213, ${alpha})`
+          ctx.lineWidth = p.width * (0.3 + 0.7 * progress) // thinner at tail
+          ctx.stroke()
+        }
       }
     }
 
@@ -154,8 +146,8 @@
 
 <div class="hero-root h-full flex flex-col" style="font-family: 'IBM Plex Mono', monospace; background: {C.bg}">
 
-  <!-- Flowing lines canvas -->
-  <canvas class="lines-canvas" bind:this={canvas} aria-hidden="true"></canvas>
+  <!-- Smoke wisps canvas -->
+  <canvas class="wisps-canvas" bind:this={canvas} aria-hidden="true"></canvas>
 
   <!-- Top bar -->
   <div class="hero-content flex items-center justify-between px-8 py-5 shrink-0" style="border-bottom: 1px solid {C.border}">
@@ -220,7 +212,7 @@
 
   .hero-root { position: relative; overflow: hidden; }
 
-  .lines-canvas {
+  .wisps-canvas {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -239,6 +231,6 @@
   .scroll-line-inner { position: absolute; top: 0; left: 0; width: 100%; background: #6B6864; animation: scrollLine 2s ease-in-out infinite; }
 
   @media (prefers-reduced-motion: reduce) {
-    .lines-canvas { display: none; }
+    .wisps-canvas { display: none; }
   }
 </style>
