@@ -4,7 +4,7 @@
   let modalOpen = $state(false)
 </script>
 
-<SectionShell index="02" label="Live Visual">
+<SectionShell index="02" label="Live Visual" blendTop>
 
   <div style="flex: 1; display: flex; flex-direction: column; gap: 40px;">
 

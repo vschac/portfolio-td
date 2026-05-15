@@ -155,6 +155,9 @@
 
 <div class="h-full relative overflow-hidden" style="background: {C.bg}; font-family: 'IBM Plex Mono', monospace">
 
+  <!-- Left-edge blend: fades from black into the video -->
+  <div class="edge-blend" aria-hidden="true"></div>
+
   <!-- WebRTC video — slightly inset with rounded frame -->
   <div
     class="videoFrame {isBorderPulsing ? 'pulse' : ''}"
@@ -205,6 +208,17 @@
 </div>
 
 <style>
+  .edge-blend {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 120px;
+    background: linear-gradient(to right, #000000 0%, transparent 100%);
+    z-index: 10;
+    pointer-events: none;
+  }
+
   .videoFrame {
     position: absolute;
     overflow: hidden;

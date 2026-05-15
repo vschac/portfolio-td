@@ -18,7 +18,7 @@
   <div style="display: flex; align-items: flex-start;">
 
     <!-- Left column — sections 01 + 02 -->
-    <div style="width: 53%; border-right: 1px solid #222220; flex-shrink: 0;">
+    <div style="width: 53%; flex-shrink: 0;">
       <div style="height: 100vh; overflow: hidden; scroll-snap-align: start;">
         <LeftPanel />
       </div>
