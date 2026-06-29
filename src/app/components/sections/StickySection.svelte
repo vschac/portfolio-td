@@ -3,7 +3,7 @@
 </script>
 
 <div class="panel">
-
+  <div class="inner">
     <div class="header">
       <span class="section-label">{label}</span>
       <span class="section-index">{index}</span>
@@ -12,8 +12,8 @@
     <div class="content">
       {@render children?.()}
     </div>
-
   </div>
+</div>
 
 <style>
   .panel {
@@ -109,11 +109,18 @@
       96px 160px;
     background-attachment: fixed;
     font-family: 'IBM Plex Mono', monospace;
+    overflow: hidden;
+  }
+
+  .inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 52px 5% 72px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    padding: 52px 10% 72px;
-    box-sizing: border-box;
-    overflow: hidden;
+    min-height: 100vh;
   }
 
   .header {

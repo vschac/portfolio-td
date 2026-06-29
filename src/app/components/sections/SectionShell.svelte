@@ -1,7 +1,7 @@
 <script>
   import { fromAction } from 'svelte/attachments'
 
-  const { index, label, minHeight = '100vh', blendTop = false, children } = $props()
+  const { index, label, minHeight = '100vh', children } = $props()
 
   function scrollReveal(node) {
     node.style.opacity = '0'
@@ -26,9 +26,6 @@
   class="shell"
   style="min-height: {minHeight};"
 >
-  {#if blendTop}
-    <div class="blend-top" aria-hidden="true"></div>
-  {/if}
   <div class="inner" {@attach fromAction(scrollReveal)}>
     <div class="header">
       <span class="section-label">{label}</span>
@@ -150,21 +147,9 @@
     pointer-events: none;
   }
 
-
-  .blend-top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 120px;
-    background: linear-gradient(to bottom, #000000, transparent);
-    pointer-events: none;
-    z-index: 1;
-  }
-
   .inner {
     position: relative;
-    z-index: 2;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     flex: 1;

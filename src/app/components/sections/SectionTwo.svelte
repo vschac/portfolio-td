@@ -2,9 +2,15 @@
   import SectionShell from './SectionShell.svelte'
 
   let modalOpen = $state(false)
+
+  function onKey(e) {
+    if (e.key === 'Escape' && modalOpen) modalOpen = false
+  }
 </script>
 
-<SectionShell index="02" label="Live Visual" blendTop>
+<svelte:window onkeydown={onKey} />
+
+<SectionShell index="02" label="Live Visual">
 
   <div style="flex: 1; display: flex; flex-direction: column; gap: 40px;">
 

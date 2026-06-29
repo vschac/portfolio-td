@@ -155,13 +155,10 @@
 
 <div class="h-full relative overflow-hidden" style="background: {C.bg}; font-family: 'IBM Plex Mono', monospace">
 
-  <!-- Left-edge blend: fades from black into the video -->
-  <div class="edge-blend" aria-hidden="true"></div>
-
   <!-- WebRTC video — slightly inset with rounded frame -->
   <div
     class="videoFrame {isBorderPulsing ? 'pulse' : ''}"
-    style="top: 50%; left: 50%; width: min(calc(100% - {VIDEO_INSET * 2}px), calc(100vh - {VIDEO_INSET * 2}px)); aspect-ratio: 1 / 1; transform: translate(-50%, -50%); border-radius: {VIDEO_RADIUS}px; box-shadow: {VIDEO_SHADOW};"
+    style="top: 50%; left: 50%; height: calc(100% - {VIDEO_INSET * 2}px); width: auto; max-width: calc(100% - {VIDEO_INSET * 2}px); aspect-ratio: 1 / 1; transform: translate(-50%, -50%); border-radius: {VIDEO_RADIUS}px; box-shadow: {VIDEO_SHADOW};"
   >
     <video
       id={FALLBACK_VIDEO_ID}
@@ -208,16 +205,6 @@
 </div>
 
 <style>
-  .edge-blend {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 120px;
-    background: linear-gradient(to right, #000000 0%, transparent 100%);
-    z-index: 10;
-    pointer-events: none;
-  }
 
   .videoFrame {
     position: absolute;
