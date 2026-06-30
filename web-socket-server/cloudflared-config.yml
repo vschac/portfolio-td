@@ -1,0 +1,16 @@
+# Cloudflare Tunnel config for the TD signaling server.
+#
+# Run with:
+#   cloudflared tunnel --config web-socket-server/cloudflared-config.yml run td-signal
+
+tunnel: td-signal
+credentials-file: /Users/vinceschacknies/.cloudflared/td-signal.json
+
+ingress:
+  # Public wss://signal.vschac.com  ->  local viewer listener (loopback only).
+  # Use http:// here — cloudflared upgrades the WebSocket automatically; ws:// is
+  # not a valid ingress service scheme.
+  - hostname: signal.vschac.com
+    service: http://127.0.0.1:9001
+  # Required catch-all
+  - service: http_status:404
