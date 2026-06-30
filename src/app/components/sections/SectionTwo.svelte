@@ -25,15 +25,27 @@
       </p>
     </div>
 
-    <!-- Interactive hint -->
+    <!-- Interactive controls -->
     <div>
       <span class="sub-label">Controls</span>
-      <p class="body-text" style="margin-top: 14px; max-width: 400px;">
-        While viewing the stream, keys <span class="key-badge">1</span>
-        <span class="key-badge">2</span> <span class="key-badge">3</span>
-        send control signals to the TouchDesigner network — resetting feedback,
-        adding snapshot noise, and incrementing the noise seed respectively.
+      <p class="body-text" style="margin-top: 14px; max-width: 420px;">
+        While viewing the live stream, press a key to send a control signal
+        straight into the TouchDesigner network:
       </p>
+      <ul class="control-list">
+        <li class="control-row">
+          <span class="key-cap">1</span>
+          <span class="control-label">Reset the feedback loop</span>
+        </li>
+        <li class="control-row">
+          <span class="key-cap">2</span>
+          <span class="control-label">Inject a burst of snapshot noise</span>
+        </li>
+        <li class="control-row">
+          <span class="key-cap">3</span>
+          <span class="control-label">Advance the noise seed</span>
+        </li>
+      </ul>
     </div>
 
     <!-- Blog button — pushed to bottom -->
@@ -135,13 +147,44 @@
     margin: 0;
   }
 
-  .key-badge {
-    display: inline-block;
-    border: 1px solid #3f3f3b;
-    padding: 0px 5px;
-    font-size: 11px;
+  .control-list {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 420px;
+  }
+
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .key-cap {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #45443f;
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: rgba(226, 221, 213, 0.04);
+    color: #E2DDD5;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .control-label {
+    font-size: 13px;
+    line-height: 1.5;
     color: #C9C4BC;
-    letter-spacing: 0.04em;
+    font-family: 'IBM Plex Mono', monospace;
   }
 
   /* Scroll animation */
