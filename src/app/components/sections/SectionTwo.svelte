@@ -37,8 +37,8 @@
     </div>
 
     <!-- Blog button — pushed to bottom -->
-    <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid #1e1e1c;">
-      <p style="font-size: 11px; line-height: 1.7; color: #3a3a37; letter-spacing: 0.04em; margin-bottom: 20px;">
+    <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid #2a2a27;">
+      <p style="font-size: 12px; line-height: 1.7; color: #A8A39B; letter-spacing: 0.04em; margin-bottom: 20px; max-width: 400px;">
         Interested in how this was built? The tech notes cover the TouchDesigner
         network, WebRTC signaling, and fallback handling in detail.
       </p>
@@ -53,7 +53,7 @@
       <div class="scroll-track">
         <div class="scroll-runner"></div>
       </div>
-      <span style="font-size: 10px; letter-spacing: 0.16em; color: #3a3a37;">
+      <span style="font-size: 10px; letter-spacing: 0.16em; color: #6B6864;">
         scroll to explore more
       </span>
     </div>
@@ -121,7 +121,7 @@
   .sub-label {
     font-size: 11px;
     letter-spacing: 0.18em;
-    color: #6B6864;
+    color: #A8A39B;
     text-transform: uppercase;
     font-family: 'IBM Plex Mono', monospace;
   }
@@ -130,17 +130,17 @@
     font-size: 13px;
     line-height: 1.9;
     color: #E2DDD5;
-    opacity: 0.62;
+    opacity: 0.86;
     font-family: 'IBM Plex Mono', monospace;
     margin: 0;
   }
 
   .key-badge {
     display: inline-block;
-    border: 1px solid #272724;
+    border: 1px solid #3f3f3b;
     padding: 0px 5px;
     font-size: 11px;
-    color: #6B6864;
+    color: #C9C4BC;
     letter-spacing: 0.04em;
   }
 
@@ -175,30 +175,31 @@
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    background: transparent;
-    border: 1px solid #222220;
-    color: #6B6864;
-    padding: 10px 20px;
+    background: rgba(226, 221, 213, 0.04);
+    border: 1px solid #45443f;
+    color: #C9C4BC;
+    padding: 12px 22px;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
   }
 
   .blog-btn:hover {
-    border-color: #484845;
-    color: #E2DDD5;
+    border-color: #6B6864;
+    color: #FFFFFF;
+    background: rgba(226, 221, 213, 0.08);
   }
 
   .btn-arrow {
-    color: #3a3a37;
+    color: #8F8B86;
     transition: color 0.2s ease, transform 0.2s ease;
   }
 
   .blog-btn:hover .btn-arrow {
-    color: #6B6864;
+    color: #E2DDD5;
     transform: translateX(3px);
   }
 
@@ -258,8 +259,8 @@
   .close-btn {
     background: transparent;
     border: none;
-    color: #3a3a37;
-    font-size: 11px;
+    color: #8F8B86;
+    font-size: 13px;
     font-family: 'IBM Plex Mono', monospace;
     cursor: pointer;
     padding: 4px 8px;
@@ -268,6 +269,6 @@
   }
 
   .close-btn:hover {
-    color: #6B6864;
+    color: #E2DDD5;
   }
 </style>

@@ -192,7 +192,7 @@
   </div>
 
   <!-- Floating label — top left -->
-  <div style="position: absolute; top: 24px; left: 28px; z-index: 20; display: flex; flex-direction: column; gap: 4px;">
+  <div style="position: absolute; top: 15px; left: 28px; z-index: 20; display: flex; flex-direction: column; gap: 4px;">
     <span style="font-size: 14px; letter-spacing: 0.14em; color: {C.fgBright}">Key: {activeKeyLabel}</span>
   </div>
 
