@@ -1,10 +1,15 @@
 <script>
   import SectionShell from './SectionShell.svelte'
+  import { stream } from '../../stores/streamMode.svelte.js'
 
   let modalOpen = $state(false)
 
   function onKey(e) {
     if (e.key === 'Escape' && modalOpen) modalOpen = false
+  }
+
+  function toggleLive() {
+    stream.live = !stream.live
   }
 </script>
 
@@ -21,8 +26,34 @@
         The visualization to the right is a generative noise system built and
         rendered in real time inside TouchDesigner. Layered feedback loops,
         seed-driven noise fields, and iterative mutation produce the forms you
-        see. The stream is delivered live over WebRTC.
+        see. By default you're watching a recorded loop.
       </p>
+    </div>
+
+    <!-- Live feed toggle -->
+    <div>
+      <span class="sub-label">Live Feed</span>
+      <p class="body-text" style="margin-top: 14px; max-width: 420px;">
+        Switch the panel to a direct peer-to-peer WebRTC stream from the live
+        TouchDesigner session. This opens a direct connection to the host machine.
+      </p>
+      <button
+        class="live-btn"
+        class:is-live={stream.live}
+        onclick={toggleLive}
+        aria-pressed={stream.live}
+      >
+        <span class="live-dot" class:on={stream.live}></span>
+        <span>{stream.live ? 'Back to recording' : 'View live feed'}</span>
+        <span class="btn-arrow">{stream.live ? '⏹' : '→'}</span>
+      </button>
+      {#if stream.live && stream.status === 'connecting'}
+        <p class="live-hint">Connecting to the live feed…</p>
+      {:else if stream.live && stream.status === 'error'}
+        <p class="live-hint err">Couldn't reach the live feed — the host may be offline. Showing the recording.</p>
+      {:else if stream.live && stream.status === 'live'}
+        <p class="live-hint ok">Live feed connected.</p>
+      {/if}
     </div>
 
     <!-- Interactive controls -->
@@ -212,6 +243,68 @@
     80%  { height: 0%;   top: 100%;  }
     100% { height: 0%;   top: 100%;  }
   }
+
+  /* Live feed toggle */
+  .live-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    background: rgba(226, 221, 213, 0.05);
+    border: 1px solid #54534d;
+    color: #E2DDD5;
+    padding: 12px 22px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+
+  .live-btn:hover {
+    border-color: #8F8B86;
+    background: rgba(226, 221, 213, 0.09);
+  }
+
+  .live-btn.is-live {
+    border-color: #6f5a4a;
+    background: rgba(176, 128, 104, 0.1);
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6B6864;
+    flex-shrink: 0;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .live-dot.on {
+    background: #c8806a;
+    box-shadow: 0 0 0 0 rgba(200, 128, 106, 0.7);
+    animation: livedot 1.8s ease-out infinite;
+  }
+
+  @keyframes livedot {
+    0%   { box-shadow: 0 0 0 0 rgba(200, 128, 106, 0.6); }
+    70%  { box-shadow: 0 0 0 7px rgba(200, 128, 106, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(200, 128, 106, 0); }
+  }
+
+  .live-hint {
+    margin: 14px 0 0;
+    max-width: 420px;
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: #8F8B86;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .live-hint.ok { color: #8a9c84; }
+  .live-hint.err { color: #b08068; }
 
   /* Button */
   .blog-btn {

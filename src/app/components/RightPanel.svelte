@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte'
   import { SimpleSignalingClient, SimpleWebRTCReceiver } from '../../webrtc.js'
+  import { stream } from '../stores/streamMode.svelte.js'
 
   const BG = '#000000'
   const VIDEO_INSET = 12
@@ -40,7 +41,65 @@
   let syncIntervalId = null
   let keyTimeoutId = null
   let borderPulseTimeoutId = null
+  let connectTimeoutId = null
   let removeListeners = () => {}
+
+  const CONNECT_TIMEOUT_MS = 12000
+
+  const statusText = $derived(
+    isStreaming
+      ? 'Live — streamed from TouchDesigner'
+      : stream.status === 'connecting'
+        ? 'Connecting to live feed…'
+        : stream.status === 'error'
+          ? "Couldn't reach the live feed — showing recording"
+          : 'Recording — looped capture'
+  )
+  const statusIcon = $derived(
+    isStreaming ? '▶' : stream.status === 'error' ? '⚠' : '■'
+  )
+
+  function startLive() {
+    if (webrtcReceiver) return // already live
+    if (!SIGNALING_WS_URL) {
+      stream.status = 'error'
+      return
+    }
+    stream.status = 'connecting'
+    signalingClient = new SimpleSignalingClient(SIGNALING_WS_URL, {
+      logStatus,
+      // Signaling dropped before frames arrived → surface the error right away.
+      onClose: () => {
+        if (stream.live && !isStreaming) stream.status = 'error'
+      },
+    })
+    webrtcReceiver = new SimpleWebRTCReceiver(signalingClient, videoEl, { logStatus })
+    signalingClient.connect()
+
+    if (connectTimeoutId !== null) window.clearTimeout(connectTimeoutId)
+    connectTimeoutId = window.setTimeout(() => {
+      connectTimeoutId = null
+      if (stream.live && !isStreaming) stream.status = 'error'
+    }, CONNECT_TIMEOUT_MS)
+  }
+
+  function stopLive() {
+    if (connectTimeoutId !== null) {
+      window.clearTimeout(connectTimeoutId)
+      connectTimeoutId = null
+    }
+    if (webrtcReceiver) {
+      webrtcReceiver.close()
+      webrtcReceiver = null
+    }
+    if (signalingClient) {
+      signalingClient.close()
+      signalingClient = null
+    }
+    isStreaming = false
+    wasStreaming = false
+    stream.status = 'idle'
+  }
 
   const logStatus = (msg) => console.log(`[STATUS] ${msg}`)
   const handleKeydown = (event) => {
@@ -126,15 +185,29 @@
 
     syncFromStream()
     syncIntervalId = window.setInterval(syncFromStream, 1000)
+  })
 
-    if (SIGNALING_WS_URL) {
-      signalingClient = new SimpleSignalingClient(SIGNALING_WS_URL, { logStatus })
-      webrtcReceiver = new SimpleWebRTCReceiver(signalingClient, videoEl, { logStatus })
-      signalingClient.connect()
+  // Connect P2P only when the viewer opts in; tear it down when they switch back.
+  $effect(() => {
+    const live = stream.live // read first so it's always tracked as a dependency
+    if (!videoEl) return
+    if (live) startLive()
+    else stopLive()
+  })
+
+  // Promote to "live" once real frames are actually rendering.
+  $effect(() => {
+    if (stream.live && isStreaming) {
+      stream.status = 'live'
+      if (connectTimeoutId !== null) {
+        window.clearTimeout(connectTimeoutId)
+        connectTimeoutId = null
+      }
     }
   })
 
   onDestroy(() => {
+    stopLive()
     removeListeners()
     if (syncIntervalId !== null) {
       window.clearInterval(syncIntervalId)
@@ -198,8 +271,8 @@
 
   <!-- Floating status — bottom left -->
   <div style="position: absolute; bottom: 28px; left: 28px; z-index: 20; display: flex; align-items: center; gap: 10px;">
-    <span style="font-size: 10px; letter-spacing: 0.1em; color: {C.fgBright}">{isStreaming ? '▶' : '■'}</span>
-    <span style="font-size: 10px; letter-spacing: 0.08em; color: {C.fgText}">{isStreaming ? 'Live - this video is being streamed from touch designer' : 'Standby - playing fallback movie'}</span>
+    <span style="font-size: 10px; letter-spacing: 0.1em; color: {stream.status === 'error' ? '#b08068' : C.fgBright}">{statusIcon}</span>
+    <span style="font-size: 10px; letter-spacing: 0.08em; color: {stream.status === 'error' ? '#b08068' : C.fgText}">{statusText}</span>
   </div>
 
 </div>

@@ -45,9 +45,10 @@ const CONTROL_CHANNEL_LABEL = "KeyboardData";
 const MAX_PENDING_CONTROL_MESSAGES = 20;
 
 export class SimpleSignalingClient {
-  constructor(url, { logStatus }) {
+  constructor(url, { logStatus, onClose }) {
     this.url = url;
     this.logStatus = logStatus;
+    this.onClose = typeof onClose === "function" ? onClose : () => {};
     this.socket = null;
     this.self = null;
     this.clients = [];
@@ -66,6 +67,8 @@ export class SimpleSignalingClient {
     this.socket.onclose = () => {
       this.logStatus("Signaling disconnected.");
       logSignal("socket closed");
+      // Genuine drop — close() nulls this handler first, so it won't fire on teardown.
+      this.onClose();
     };
 
     this.socket.onerror = (error) => {
@@ -89,6 +92,25 @@ export class SimpleSignalingClient {
     }
     logSignal("send", message);
     this.socket.send(JSON.stringify(message));
+  }
+
+  close() {
+    if (this.socket) {
+      // Drop handlers so a late onclose/onerror can't touch torn-down state.
+      this.socket.onopen = null;
+      this.socket.onclose = null;
+      this.socket.onerror = null;
+      this.socket.onmessage = null;
+      try {
+        this.socket.close();
+      } catch {
+        /* already closing/closed */
+      }
+      this.socket = null;
+    }
+    this.self = null;
+    this.clients = [];
+    this.webrtc = null;
   }
 
   setWebRTCConnection(connection) {
@@ -164,6 +186,34 @@ export class SimpleWebRTCReceiver {
     this.pendingControlMessages = [];
 
     this.signalingClient.setWebRTCConnection(this);
+  }
+
+  close() {
+    if (this.dataChannel) {
+      try {
+        this.dataChannel.close();
+      } catch {
+        /* ignore */
+      }
+      this.dataChannel = null;
+    }
+    if (this.peerConnection) {
+      try {
+        this.peerConnection.close();
+      } catch {
+        /* ignore */
+      }
+      this.peerConnection = null;
+    }
+    if (this.videoElement) {
+      this.videoElement.srcObject = null;
+    }
+    this.targetAddress = null;
+    this.makingOffer = false;
+    this.ignoreOffer = false;
+    this.isSettingRemoteAnswerPending = false;
+    this.pendingControlMessages = [];
+    logRtc("receiver closed");
   }
 
   createPeerConnection() {
