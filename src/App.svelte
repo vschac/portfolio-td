@@ -8,7 +8,7 @@
   import SectionContact from './app/components/sections/SectionContact.svelte'
 </script>
 
-<div style="width: 100vw; background: #141413; overflow-x: clip;">
+<div style="width: 100%; background: #141413; overflow-x: clip;">
 
   <!--
     Sections 01–02: two-column layout.

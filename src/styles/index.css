@@ -5,8 +5,33 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  background: #141413;
 }
 
 html {
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
+}
+
+/* Sleek scrollbar — warm dark theme */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a37 transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3a37;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6B6864;
 }
