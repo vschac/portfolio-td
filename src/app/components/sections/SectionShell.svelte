@@ -153,14 +153,14 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    padding: 52px 10% 80px;
+    padding: clamp(18px, 3.4vh, 52px) 10% clamp(20px, 3.4vh, 80px);
   }
 
   .header {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 64px;
+    margin-bottom: clamp(14px, 2.6vh, 64px);
   }
 
   .section-label {

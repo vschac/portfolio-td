@@ -9,7 +9,7 @@ html, body {
 }
 
 html {
-  scroll-snap-type: y proximity;
+  scroll-snap-type: y mandatory;
 }
 
 /* Sleek scrollbar — warm dark theme */

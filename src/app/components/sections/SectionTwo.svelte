@@ -27,12 +27,12 @@
 
 <SectionShell index="02" label="Live Visual">
 
-  <div style="flex: 1; display: flex; flex-direction: column; gap: 24px;">
+  <div style="flex: 1; display: flex; flex-direction: column; gap: clamp(8px, 1.7vh, 24px);">
 
     <!-- Description of the graphic -->
     <div>
       <span class="sub-label">Visual System</span>
-      <p class="body-text" style="margin-top: 14px; max-width: 400px;">
+      <p class="body-text" style="margin-top: clamp(8px, 1.2vh, 14px); max-width: 400px;">
         The visualization to the right is a generative noise system built and
         rendered in real time inside TouchDesigner. Layered feedback loops,
         seed-driven noise fields, and iterative mutation produce the forms you
@@ -43,7 +43,7 @@
     <!-- Live feed toggle -->
     <div>
       <span class="sub-label">Live Feed</span>
-      <p class="body-text" style="margin-top: 14px; max-width: 420px;">
+      <p class="body-text" style="margin-top: clamp(8px, 1.2vh, 14px); max-width: 420px;">
         Switch the panel to a direct peer-to-peer WebRTC stream from the live
         TouchDesigner session. This opens a direct connection to the host machine.
       </p>
@@ -69,7 +69,7 @@
     <!-- Interactive controls -->
     <div>
       <span class="sub-label">Controls</span>
-      <p class="body-text" style="margin-top: 14px; max-width: 420px;">
+      <p class="body-text" style="margin-top: clamp(8px, 1.2vh, 14px); max-width: 420px;">
         While viewing the live stream, press a key to send a control signal
         straight into the TouchDesigner network:
       </p>
@@ -90,8 +90,8 @@
     </div>
 
     <!-- Blog button — pushed to bottom -->
-    <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid #2a2a27;">
-      <p style="font-size: 12px; line-height: 1.7; color: #A8A39B; letter-spacing: 0.04em; margin-bottom: 20px; max-width: 400px;">
+    <div style="margin-top: auto; padding-top: clamp(14px, 2vh, 24px); border-top: 1px solid #2a2a27;">
+      <p style="font-size: 12px; line-height: 1.6; color: #A8A39B; letter-spacing: 0.04em; margin-bottom: clamp(12px, 1.6vh, 20px); max-width: 400px;">
         Interested in how this was built? The tech notes cover the TouchDesigner
         network, WebRTC signaling, and fallback handling in detail.
       </p>
@@ -206,7 +206,7 @@
 
   .body-text {
     font-size: 13px;
-    line-height: 1.9;
+    line-height: 1.62;
     color: #E2DDD5;
     opacity: 0.86;
     font-family: 'IBM Plex Mono', monospace;
@@ -225,11 +225,11 @@
 
   .control-list {
     list-style: none;
-    margin: 18px 0 0;
+    margin: clamp(10px, 1.4vh, 18px) 0 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: clamp(8px, 1vh, 12px);
     max-width: 420px;
   }
 
@@ -244,8 +244,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     border: 1px solid #45443f;
     border-bottom-width: 2px;
     border-radius: 4px;
@@ -267,7 +267,7 @@
   .scroll-track {
     position: relative;
     width: 1px;
-    height: 24px;
+    height: 18px;
     background: #272724;
     overflow: hidden;
     flex-shrink: 0;
@@ -321,7 +321,7 @@
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    margin-top: 20px;
+    margin-top: clamp(10px, 1.6vh, 20px);
     background: rgba(226, 221, 213, 0.05);
     border: 1px solid #54534d;
     color: #E2DDD5;
