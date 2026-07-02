@@ -43,6 +43,13 @@
       "hex": "#90806f"
     },
     {
+      "file": "IMG_7719.jpeg",
+      "thumb": "IMG_7719.webp",
+      "ratio": 0.75,
+      "l": 0.1049,
+      "hex": "#a77258"
+    },
+    {
       "file": "IMG_6794.jpeg",
       "thumb": "IMG_6794.webp",
       "ratio": 0.75,
@@ -69,6 +76,20 @@
       "ratio": 0.633,
       "l": 0.134,
       "hex": "#bb7344"
+    },
+    {
+      "file": "IMG_7201.jpeg",
+      "thumb": "IMG_7201.webp",
+      "ratio": 1.3333,
+      "l": 0.1425,
+      "hex": "#396ec6"
+    },
+    {
+      "file": "IMG_8209.jpeg",
+      "thumb": "IMG_8209.webp",
+      "ratio": 1.4142,
+      "l": 0.1444,
+      "hex": "#987667"
     },
     {
       "file": "IMG_7187.jpeg",
@@ -111,6 +132,20 @@
       "ratio": 0.7499,
       "l": 0.1674,
       "hex": "#8a8575"
+    },
+    {
+      "file": "IMG_8551.jpeg",
+      "thumb": "IMG_8551.webp",
+      "ratio": 0.75,
+      "l": 0.1719,
+      "hex": "#c65c39"
+    },
+    {
+      "file": "IMG_7081.jpeg",
+      "thumb": "IMG_7081.webp",
+      "ratio": 0.75,
+      "l": 0.1751,
+      "hex": "#b17c4e"
     },
     {
       "file": "IMG_6629.jpeg",
