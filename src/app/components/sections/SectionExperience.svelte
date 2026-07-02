@@ -4,8 +4,9 @@
   const items = [
     {
       meta: 'Jan - Jun 2026 · Co-op',
-      title: 'Backend/Infrastructure Engineer',
+      title: 'Platform Engineer',
       bullets: [
+        'Built a CDK-based disaster recovery pattern using AWS resources and streamlined the cold-deploy process for our application into an arbitrary AWS account. ',
         'Designed and deployed ElastiCache (Redis) caching layer, dramatically improving page load latency and improving scalability under peak traﬃc',
         'Built end-to-end on-call automations integrating Slack, Datadog, Notion, and Linear, reducing manual incident coordination and postmortem overhead',
         'Developed Apache Superset dashboards to monitor claims processing and internal KPIs, enabling data-driven decision making across operations',

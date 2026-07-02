@@ -5,7 +5,7 @@
     {
       meta: '2026 · Web + systems',
       title: 'This Portfolio',
-      body: 'Svelte + Vite site with a live WebRTC stream from a TouchDesigner generative system. Keypress signals route back to the TD network in real time.',
+      body: 'Svelte app with a live WebRTC stream from a TouchDesigner generative system. Keypress signals route back to the TD network in real time. The intermediary signaling server is self-hosted and connects to Vercel via a funnel.',
       tags: ['Svelte', 'WebRTC', 'TouchDesigner'],
     },
     {
