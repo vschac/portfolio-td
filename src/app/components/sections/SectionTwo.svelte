@@ -80,7 +80,7 @@
         </li>
         <li class="control-row">
           <span class="key-cap">2</span>
-          <span class="control-label">Inject a burst of snapshot noise</span>
+          <span class="control-label">Rotate the noise</span>
         </li>
         <li class="control-row">
           <span class="key-cap">3</span>

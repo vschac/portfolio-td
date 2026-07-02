@@ -191,7 +191,7 @@
         <span style="color: {C.fgFaint}">·</span>
         <span style="font-size: 11px; letter-spacing: 0.1em; color: {C.fgDim}">Developer</span>
         <span style="color: {C.fgFaint}">·</span>
-        <span style="font-size: 11px; letter-spacing: 0.1em; color: {C.fgDim}">Artist</span>
+        <span style="font-size: 11px; letter-spacing: 0.1em; color: {C.fgDim}">Creative tech enthusiast</span>
       </div>
 
       <!-- Divider -->
